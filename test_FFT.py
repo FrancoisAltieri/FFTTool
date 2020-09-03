@@ -14,6 +14,6 @@ class TestFFTAnalyser(TestCase):
         twoPiT = lambda i: time(i) * 2 * np.pi
         omegaTForF = lambda i,f : f*twoPiT(i)
         com = lambda i, f: np.cos(omegaTForF(i, f))
-        signal = lambda i: com(i, 1) + 0.5 * com(i, 3)
+        signal = lambda i: com(i, 1) + 0.5 * com(i, 2)
         sigArray = np.fromfunction(signal, (300,))
         f.process_signal(sigArray)
