@@ -21,19 +21,12 @@ class FFTAnalyser:
         for i in range(0,signal_size-self.window_number_points()):
             sample = signal[i:i+self.window_number_points()]
             rft = np.fft.rfft(sample)
-            fftsample = rft.real**2 + rft.imag**2
-            res[i] = fftsample
-        return res
+            res[i] = rft.real**2 + rft.imag**2
+        return res.transpose()
 
     def process_signal_index(self,signal,index):
-        signal_size = len(signal)
-        res = np.zeros((int(signal_size-self.window_number_points()),1))
-        for i in range(0,signal_size-self.window_number_points()):
-            sample = signal[i:(i+self.window_number_points())]
-            rft = np.fft.rfft(sample)
-            fftsample = rft.real**2 + rft.imag**2
-            res[i] = fftsample[index]
-        return res
+        res = self.process_signal(signal)
+        return res[index]
 
     def generate_test_signal(self,duration, dt):
         time = np.arange(0,duration,dt)
