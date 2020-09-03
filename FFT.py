@@ -17,10 +17,11 @@ class FFTAnalyser:
 
     def process_signal(self,signal):
         signal_size = len(signal)
-        res = np.zeros((int(signal_size-self.window_number_points()),int(self.window_number_points()/2)))
+        res = np.zeros((int(signal_size-self.window_number_points()),int(1+self.window_number_points()/2)))
         for i in range(0,signal_size-self.window_number_points()):
-            sample = signal[i:i+self.window_number_points()-1]
-            fftsample = np.fft.rfft(sample)
+            sample = signal[i:i+self.window_number_points()]
+            rft = np.fft.rfft(sample)
+            fftsample = rft.real**2 + rft.imag**2
             res[i] = fftsample
         return res
 
@@ -35,21 +36,14 @@ class FFTAnalyser:
         return res
 
     def generate_test_signal(self,duration, dt):
-        time = lambda i: i * dt
-        twoPiT = lambda i: time(i) * 2 * np.pi
-        omegaTForF = lambda i,f : f*twoPiT(i)
-        com = lambda i, f: np.cos(omegaTForF(i, f))
-        signal = lambda i: com(i, 1) + 0.5 * com(i, 2)
-        sigArray = np.fromfunction(signal, (int(duration/dt),))
+        time = np.arange(0,duration,dt)
+        com = lambda f: np.cos(2*np.pi*f*time)
+        sigArray = com(1) + 0.5 * com(2)
         return sigArray
 
     def generate_test_signal2(self,duration, dt):
-        time = lambda i: i * dt
-        twoPiT = lambda i: time(i) * 2 * np.pi
-        omegaTForF = lambda i,f : f*twoPiT(i)
-        com = lambda i, f: np.cos(omegaTForF(i, f))
-        signal = lambda i: com(i, 1) + 0.5 * com(i, 2)
-        signal2 = lambda i: com(i, 1) + 0.5 * com(i, 3)
-        sigArray = np.fromfunction(signal, (int(duration/dt),))
-        sigArray2 = np.fromfunction(signal2, (int(duration/dt),))
+        time = np.arange(0,duration,dt)
+        com = lambda f: np.cos(2*np.pi*f*time)
+        sigArray = com(1) + 0.5 * com(2)
+        sigArray2 = com(1) + 0.5 * com(3)
         return np.concatenate((sigArray,sigArray2))
