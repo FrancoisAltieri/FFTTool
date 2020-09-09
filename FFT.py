@@ -53,8 +53,17 @@ class FFTAnalyser:
         for i in range(0,signal_size-self.window_number_points()):
             sample = signal[i:i+self.window_number_points()]
             rft = np.fft.rfft(sample)
-            res[i] = rft.real**2 + rft.imag**2
+            res[i] = np.sqrt(rft.real**2+rft.imag**2) /self.window_number_points()
         return res.transpose()
+
+    def last_window(self,signal):
+        signal_size = len(signal)
+        return signal[signal_size-self.window_number_points():signal_size]
+
+    def last_window_fourier(self,signal):
+        sample = self.last_window(signal)
+        rft = np.fft.rfft(sample)
+        return np.sqrt(rft.real**2+rft.imag**2) /self.window_number_points()
 
     def process_signal_index(self,signal,index):
         """

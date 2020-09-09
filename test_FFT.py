@@ -70,3 +70,7 @@ class TestFFTAnalyser(TestCase):
         average = r[0]
         average_by_index = f.process_signal_index(signal,0)
         self.assertEqual(average.all(),average_by_index.all())
+
+    def test_from_csv(self):
+        path = r'E:\pythonProjects\test\samples\thrust_dt_0.002626740215419s.csv'
+        ol
